@@ -41,7 +41,7 @@ kotlin {
                 api(compose.material)
                 @OptIn(ExperimentalComposeLibrary::class)
                 api(compose.components.resources)
-                api(libs.androidx.annotation)
+                api("androidx.annotation:annotation:1.7.0")
                 api(libs.skiko.common)
             }
         }
@@ -71,10 +71,10 @@ kotlin {
 
 android {
     namespace = "com.gandiva.neumorphism"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -99,19 +99,4 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
-    libraryVariants.all {
-        outputs.all {
-            packageLibraryProvider {
-                archiveFileName.set(getArtifactName())
-            }
-        }
-    }
 }
-
-fun getArtifactName(): String {
-    val versionName = project.rootProject.extra["artifactVersion"] as String
-    return "neumorphic-$versionName.aar"
-}
-
-apply(from = "./publish-android-library.gradle")
